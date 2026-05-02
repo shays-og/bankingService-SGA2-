@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+message StatusResponse {
+  bool success = 1; 
+  string message = 2; 
+}
+
+
+service AccountManagementService {
+  rpc getBalance (BalanceRequest) returns (BalanceResponse);
+  rpc updateBalance (UpdateBalanceRequest) returns (StatusResponse);
+}
+
+message BalanceRequest {
+  string user_id = 1; 
+}
+
+message BalanceResponse {
+  string user_id = 1;
+  double balance = 2; 
+}
+
+message UpdateBalanceRequest {
+  string user_id = 1;
+  double amount = 2; 
+  string operation_type = 3;
+}
+
+service TransactionService {
+  rpc initiateTransfer (TransferRequest) returns (TransferResponse);
+  rpc getTransactionHistory (TransactionHistoryRequest) returns (TransactionHistoryResponse);
+}
+
+message TransferRequest {
+  string sender_id = 1; 
+  string receiver_id = 2; 
+  double amount = 3; 
+  string note = 4; 
+}
+
+message TransferResponse {
+  bool success = 1;
+  string transaction_id = 2; 
+  string message = 3; 
+}
+
+message TransactionHistoryRequest {
+  string user_id = 1;
+  int32  page = 2; 
+  int32  per_page = 3; 
+}
+
+message Transaction {
+  string transaction_id = 1;
+  string sender_id = 2;
+  string receiver_id = 3;
+  double amount = 4;
+  string status = 5; 
+  string timestamp = 6; 
+  string note = 7; 
+}
+
+message TransactionHistoryResponse {
+  repeated Transaction transactions = 1;
+  int32 total_count = 2;
+}
